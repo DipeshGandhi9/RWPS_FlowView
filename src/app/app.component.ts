@@ -39,20 +39,17 @@ export class AppComponent {
     this.appService.loadLatestChData()
       .subscribe(
         (data) => {
-          console.log(data);
-          // this.pumps = JSON.parse(data._body);
+          //console.log(data);
           var newData = JSON.parse(data._body);
           var firstRow;
           if(this.pumps.length > 0 ){
             firstRow = this.pumps[0];
           }
-          console.log("First Row : " + firstRow );
 
           if(firstRow && newData && newData.length > 0 && firstRow.SampleTime < newData[0].SampleTime){
             this.pumps.splice(0,0,newData[0]);
           }
 
-          console.log(this.pumps);
         },
         (error) => {
           this.errors = "Fail to load pump data.";
