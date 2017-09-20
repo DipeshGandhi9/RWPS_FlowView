@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from "@angular/http";
+import { Http, Headers, Response, RequestOptions, URLSearchParams } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
@@ -7,12 +7,22 @@ export class AppService {
 
   constructor(public http:Http) { }
 
-  loadChData() : Observable<any>{
-    return this.http.get('/api/chdata/');
+  loadChData(){
+    return this.http.get('/api/chdata');
   }
 
-  loadLatestChData() : Observable<any>{
-    return this.http.get('/api/chdata/latest');
+  loadChDetail(columnId:any){
+    let myParams = new URLSearchParams();
+    myParams.append('id', columnId);
+    let options = new RequestOptions({params: myParams });
+    return this.http.get('/api/chdetail',options);
+  }
+
+  loadLatestChData(columnId:any) : Observable<any>{
+    let myParams = new URLSearchParams();
+    myParams.append('id', columnId);
+    let options = new RequestOptions({params: myParams });
+    return this.http.get('/api/chdata/latest', options);
   }
 
   private fnExtractData(res:Response) {
