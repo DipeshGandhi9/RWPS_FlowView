@@ -14,22 +14,52 @@ export class MainDetailComponent implements OnInit, OnDestroy {
   location = "";
   private columnId;
   private detailTimer;
+  private zeroDetailTimer;
+  private zeroFlowId = "342";
 
-  constructor(private appService : AppService, route: ActivatedRoute,  private pipeService : PumpService) {
+
+  constructor(private appService : AppService, route: ActivatedRoute,  private pumpService : PumpService) {
     this.columnId = route.snapshot.params['id'];
     // console.log( this.columnId );
-    this.getHourlyFlowData();
+
+    if(this.columnId === 'ZERO_POINT'){
+      this.loadZeroChDetailData(this.zeroFlowId);
+      this.setZeroLatestDataTimer();
+    }else{
+      this.getHourlyFlowData();
+      this.setLatestDataTimer();
+    }
+
   }
 
-  ngOnInit() {
+  private setZeroLatestDataTimer():void {
+    /*Load Pump status on every 30sec.*/
+    this.zeroDetailTimer = setInterval(() => {
+      this.getZeroLatestFlowData(this.zeroFlowId);
+    }, 30000);
+  }
+
+  private setLatestDataTimer():void {
     /*Load Pump status on every 30sec.*/
     this.detailTimer = setInterval(() => {
       this.getLatestFlowData();
     }, 30000);
   }
 
+  ngOnInit() {
+   /* /!*Load Pump status on every 30sec.*!/
+    this.detailTimer = setInterval(() => {
+      this.getLatestFlowData();
+    }, 30000);*/
+  }
+
   ngOnDestroy():void {
-    clearInterval(this.detailTimer);
+    if(this.zeroDetailTimer){
+      clearInterval(this.zeroDetailTimer);
+    }else{
+      clearInterval(this.detailTimer);
+    }
+
   }
 
   getHourlyFlowData(){
@@ -53,7 +83,7 @@ export class MainDetailComponent implements OnInit, OnDestroy {
     this.appService.loadLatestChData(this.columnId)
       .subscribe(
       (data) => {
-        // console.log(data);
+         console.log(data);
         var newData = JSON.parse(data["_body"]);
         var firstRow;
         if(this.pumps.length > 0 ){
@@ -72,12 +102,12 @@ export class MainDetailComponent implements OnInit, OnDestroy {
   }
 
   getPumpKeyDescription(key) {
-    this.location = this.pipeService.getPumpKeyDescription(key);
+    this.location = this.pumpService.getPumpKeyDescription(key);
     return this.location;
   }
 
   getPumpKeyUnit(key):void {
-    return this.pipeService.getPumpKeyUnit(key);
+    return this.pumpService.getPumpKeyUnit(key);
   }
 
   checkValue(pumpValue){
@@ -87,4 +117,71 @@ export class MainDetailComponent implements OnInit, OnDestroy {
     }
     return validValue;
   }
+
+  private loadZeroChDetailData(id:string):void {
+    this.errors = "";
+
+    this.appService.loadZeroChDetail(id)
+      .subscribe(
+      (data) => {
+        //console.log(data);
+        var newData = JSON.parse(data["_body"]);
+        if(newData.length > 0){
+          for(var i=newData.length-1; i>=0; i--){
+            var row = {'Dated_Time': newData[i]['SampleTime'],
+              'ZERO_POINT': newData[i]['Analog2'],
+            };
+            this.pumps.splice(0,0,row);
+          }
+        }
+        //console.log(this.pumps);
+      },
+      (error) => {
+        this.errors = "Fail to load pump data.";
+      }
+    );
+  }
+
+  getZeroLatestFlowData(id:string):void {
+    this.errors = "";
+    this.appService.loadZeroLatestChData(id)
+      .subscribe(
+      (data) => {
+        //console.log("zero",data);
+        var newData = JSON.parse(data["_body"]);
+        var firstRow;
+        if(this.pumps.length > 0 ){
+          firstRow = this.pumps[0];
+        }
+
+        if(firstRow && newData && newData.length > 0 && firstRow.Dated_Time < newData[0].SampleTime){
+          var row = {'Dated_Time': newData[0]['SampleTime'],
+            'ZERO_POINT': newData[0]['Analog2'],
+          };
+          this.pumps.splice(0,0,row);
+        }
+
+      },
+      (error) => {
+        this.errors = "Fail to load pump data.";
+      }
+    );
+  }
+
+  getPumpValue(value,key){
+    var digitalPumpList = this.pumpService.getDigitalPumpList();
+    var selected = digitalPumpList.find(k => k == key);
+    // var selected = digitalPumpList.filter(k => k == key);
+
+    if(selected){
+      if(value > 0 || value.toUpperCase() == "ON"){
+        return 'ON';
+      }else {
+        return 'OFF'
+      }
+    }
+    return value;
+  }
+
+
 }

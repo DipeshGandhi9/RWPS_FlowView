@@ -13,7 +13,7 @@ export class MainComponent implements OnInit, OnDestroy {
   pumps = [];
   private timer;
 
-  constructor(private appService : AppService, private pipeService : PumpService) {
+  constructor(private appService : AppService, private pumpService : PumpService) {
     this.getHourlyFlowData();
   }
 
@@ -41,6 +41,7 @@ export class MainComponent implements OnInit, OnDestroy {
           this.pumps = null;
         }
         this.pumps = newData;
+        this.loadZeroFlowData();
 
         console.log(this.pumps);
       },
@@ -51,11 +52,11 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   getPumpKeyDescription(key):void {
-    return this.pipeService.getPumpKeyDescription(key);
+    return this.pumpService.getPumpKeyDescription(key);
   }
 
   getPumpKeyUnit(key):void {
-    return this.pipeService.getPumpKeyUnit(key);
+    return this.pumpService.getPumpKeyUnit(key);
   }
 
   checkValue(pumpValue){
@@ -64,6 +65,42 @@ export class MainComponent implements OnInit, OnDestroy {
         validValue = false;
       }
     return validValue;
+  }
+
+  loadZeroFlowData(){
+    this.appService.loadZeroChData()
+      .subscribe(
+        (data) => {
+          console.log(data);
+          var newData = JSON.parse(data["_body"]);
+          if(newData.length > 0){
+            var row = {'Dated_Time': newData[0]['SampleTime'],
+                        'ZERO_POINT': newData[0]['Analog2'],
+                      };
+            this.pumps.splice(0,0,row);
+          }
+
+          console.log(this.pumps);
+        },
+        (error) => {
+          this.errors = "Fail to load Zero flow data.";
+        }
+      );
+  }
+
+  getPumpValue(value,key){
+    var digitalPumpList = this.pumpService.getDigitalPumpList();
+    var selected = digitalPumpList.find(k => k == key);
+    // var selected = digitalPumpList.filter(k => k == key);
+
+    if(selected){
+      if(value > 0 || value.toUpperCase() == "ON"){
+        return 'ON';
+      }else {
+        return 'OFF'
+      }
+    }
+    return value;
   }
 
 }

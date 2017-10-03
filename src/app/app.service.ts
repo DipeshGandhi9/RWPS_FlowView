@@ -5,7 +5,27 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class AppService {
 
+  private zeroFlowHost = "http://123.63.212.28:3000";
+
   constructor(public http:Http) { }
+
+  loadZeroChData(){
+    return this.http.get(this.zeroFlowHost + '/api/chdata');
+  }
+
+  loadZeroChDetail(UnitID:any){
+    let myParams = new URLSearchParams();
+    myParams.append('id', UnitID);
+    let options = new RequestOptions({params: myParams });
+    return this.http.get(this.zeroFlowHost + '/api/chdetail',options);
+  }
+
+  loadZeroLatestChData(UnitID:any){
+    let myParams = new URLSearchParams();
+    myParams.append('id', UnitID);
+    let options = new RequestOptions({params: myParams });
+    return this.http.get(this.zeroFlowHost + '/api/chdata/latest',options);
+  }
 
   loadChData(){
     return this.http.get('/api/chdata');

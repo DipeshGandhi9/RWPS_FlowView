@@ -32,7 +32,7 @@
                     <td>{{ currentPump.Dated_Time | date:'dd.MM.yyyy'}}</td>
                     <td>{{ currentPump.Dated_Time | date:'h:mm a'}}</td>
                     <td>{{ getPumpKeyDescription(pump.key) }} </td>
-                    <td *ngIf="pump.value; else noData">{{ pump.value }}
+                    <td *ngIf="pump.value || pump.value === 0; else noData">{{ getPumpValue(pump.value, pump.key)}}
                         <!--<span *ngIf= checkValue(pump.value)>M<sup>3</sup>/Hr</span>-->
                        <span [innerHTML]="getPumpKeyUnit(pump.key)"></span>
                     </td>
