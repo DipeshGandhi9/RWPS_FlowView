@@ -170,7 +170,5 @@ else{
   });
   
   
-  //* Commit 2 *// 
-  /* Commit 3 */
 }
 module.exports = app;
