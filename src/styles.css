@@ -1,1 +1,57 @@
 /* You can add global styles to this file, and also import other style files */
+
+#header .navbar-brand {
+  height: auto !important;
+  padding-bottom: 0px;
+}
+
+#footer .navbar-brand {
+  height: auto !important;
+}
+
+.logo-phedrajasthan, .logo-groupnish{
+  width:120px;
+}
+
+.logo-meil{
+  width : 250px;
+}
+
+.containerPanel{
+  margin-top: 20px;
+}
+
+@media (min-width: 486px){
+  .navbar-right {
+    float: right!important;
+    margin-right: -15px;
+  }
+}
+
+@media (min-width: 220px) and (max-width: 486px){
+  .navbar-right {
+    float: right!important;
+    margin-right: -15px;
+  }
+
+  .logo-phedrajasthan, .logo-groupnish{
+    width:60px;
+  }
+
+  .logo-meil{
+    width : 125px;
+  }
+
+  .containerPanel {
+    margin-top: 0px!important;
+  }
+
+  .panel-heading{
+    padding: 10px 15px!important;
+  }
+
+  .panel-title{
+    font-size: 20px!important;
+  }
+
+}
