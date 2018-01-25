@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppService } from './../app.service';
 import { PumpService } from './../pump.service';
+import { DateFormatPipe } from './../pipes/dateFormatPipe';
 
 @Component({
   selector: 'app-main',
@@ -11,17 +12,22 @@ export class MainComponent implements OnInit, OnDestroy {
   title = 'Welcome !';
   errors = "";
   pumps = [];
+  perDayFlow = [];
   private timer;
+  startDate = new Date();
+  endDate = new Date();
+  dateFormatPipe = new DateFormatPipe();
 
   constructor(private appService : AppService, private pumpService : PumpService) {
-    this.getHourlyFlowData();
+    // this.getHourlyFlowData();
+    this.loadSMCData();
   }
 
   ngOnInit() {
     /*Load Pump status on every 30sec.*/
-    this.timer = setInterval(() => {
-      this.getHourlyFlowData();
-    }, 30000);
+    // this.timer = setInterval(() => {
+    //   this.getHourlyFlowData();
+    // }, 30000);
 
   }
 
@@ -59,6 +65,13 @@ export class MainComponent implements OnInit, OnDestroy {
     return this.pumpService.getPumpKeyUnit(key);
   }
 
+  // getColspan(key):any {
+  //   if(key == "Date_Time"){
+  //     return 3;
+  //   }
+  //   return 1;
+  // }
+
   checkValue(pumpValue){
     var validValue = true;
       if(isNaN(Number(pumpValue))){
@@ -80,7 +93,7 @@ export class MainComponent implements OnInit, OnDestroy {
             this.pumps.splice(0,0,row);
           }
 
-          console.log(this.pumps);
+          // console.log(this.pumps);
         },
         (error) => {
           this.errors = "Fail to load Zero flow data.";
@@ -99,8 +112,63 @@ export class MainComponent implements OnInit, OnDestroy {
       }else {
         return 'OFF'
       }
+    }else if(key == "Date_Time"){
+      return this.dateFormatPipe.transform(value, 'dd-MM-yyyy h:mm a');
     }
     return value;
+  }
+
+  dateChangeHandler = function() {
+    // console.log("Change called...");
+    this.loadSMCData();
+  };
+
+  loadSMCData(){
+    var startDate = this.dateFormatPipe.transform(this.startDate, "yyyy/MM/dd");
+    var endDate = this.dateFormatPipe.transform(this.endDate, "yyyy/MM/dd");
+
+    // console.log("Start Date " + this.dateFormatPipe.transform(this.startDate, 'yyyy/MM/dd HH:mm:ss'));
+    // console.log("End Date " + this.dateFormatPipe.transform(this.endDate, 'yyyy/MM/dd HH:mm:ss'));
+
+    this.appService.loadSMCDataByDate(startDate, endDate)
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          var newData = JSON.parse(data["_body"]);
+          if(newData.length > 0){
+            // var row = {'Dated_Time': newData[0]['SampleTime'],
+            //   'ZERO_POINT': newData[0]['Analog2'],
+            // };
+            // this.pumps.splice(0,0,row);
+            this.pumps = newData;
+          }
+
+          // console.log(this.pumps);
+        },
+        (error) => {
+          this.errors = "Fail to load smc data.";
+        }
+      );
+
+    this.appService.loadSMCPerDayDataByDate(startDate, endDate)
+      .subscribe(
+        (data) => {
+          // console.log(data);
+          var newData = JSON.parse(data["_body"]);
+          if(newData.length > 0){
+            // var row = {'Dated_Time': newData[0]['SampleTime'],
+            //   'ZERO_POINT': newData[0]['Analog2'],
+            // };
+            // this.pumps.splice(0,0,row);
+            this.perDayFlow = newData;
+          }
+
+          // console.log(this.perDayFlow);
+        },
+        (error) => {
+          this.errors = "Fail to load per day data.";
+        }
+      );
   }
 
 }

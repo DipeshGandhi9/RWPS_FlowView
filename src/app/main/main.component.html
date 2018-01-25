@@ -7,10 +7,15 @@
   <nav class="navbar fixed-top navbar-light bg-faded">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img class="logo-phedrajasthan" src="/assets/image001.png">
+        <img class="logo-phedrajasthan" src="/assets/smc.png">
       </a>
+      <div class="panel panel-primary customTitle" style="margin:20px auto; float:left">
+        <div class="panel-heading" style="padding: 30px 15px">
+          <h3 class="panel-title" style="text-align:center;"> SMC KOSAD WATER DISTRIBUTION STATION SCADA REPORTS </h3>
+        </div>
+      </div>
       <a class="navbar-brand navbar-right" href="#">
-        <img class="logo-meil" src="/assets/image002.png">
+        <img class="logo-groupnish" src="/assets/image003.png">
       </a>
     </div>
   </nav>
@@ -19,42 +24,179 @@
 <div class="container" >
 
   <div class="panel panel-primary containerPanel" >
-    <div class="panel-heading" style="padding: 30px 15px">
-      <h3 class="panel-title" style="text-align:center;font-size: 36px"> Surpura Water Scheme </h3>
+    <!--<div class="panel-heading" style="padding: 30px 15px">-->
+      <!--<h3 class="panel-title" style="text-align:center;font-size: 36px"> Surpura Water Scheme </h3>-->
+    <!--</div>-->
+
+    <br>
+    <div class="row">
+      <div class='col-sm-12 col-md-12 col-lg-12'>
+        <h3 style="text-align:center;" >S.E.T.C OF LEVEL BASED AUTOMATION</h3>
+      </div>
     </div>
+
+    <div class="row">
+      <div class='col-sm-12 col-md-12 col-lg-12'>
+        <form  class="form-inline">
+          <div class="form-group col-sm-5 col-md-5 col-lg-5" >
+            <label class="control-label">Start Date : </label>
+            <div  class='input-group date' id='datetimepicker1'>
+              <input type="date" name="startDate" class="form-control" [ngModel] ="startDate | date:'yyyy-MM-dd'" (ngModelChange)="startDate = $event" />
+              <span class="input-group-addon" id="startdate">{{startDate | date:'dd-MM-yyyy'}}</span>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-5 col-md-5 col-lg-5">
+            <label class="control-label">End Date : </label>
+            <div  class='input-group date' id='datetimepicker2'>
+              <input type="date" name="endDate" class="form-control" [ngModel] ="endDate | date:'yyyy-MM-dd'" (ngModelChange)="endDate = $event"/>
+              <span class="input-group-addon" id="enddate">{{endDate | date:'dd-MM-yyyy'}}</span>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-2 col-md-2 col-lg-2">
+            <label class="control-label"></label>
+            <div  class='input-group date' id='loadButton'>
+              <input type="button" class="btn btn-primary" name="load" value="Load" (click)="dateChangeHandler()" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="panel-body table-responsive" >
       <div class="row">
         <div class="col-lg-12 ">
-          <table class="table table-hover">
+          <div class="table-responsive">
+          <table id="smcDataTable" class="table table-hover table-bordered table-fixed">
             <thead>
-            <tr>
-              <!--<th>ID</th>-->
-              <th>DATE</th>
-              <th>TIME</th>
-              <th>LOCATION</th>
-              <th>STATUS</th>
-              <th></th>
-            </tr>
+              <tr>
+                <th colspan="3" rowspan ="2" scope="colgroup">DATE TIME</th>
+                <th colspan="3" scope="colgroup">level</th>
+                <th colspan="1" scope="colgroup">PRESSURE</th>
+                <th colspan="3" scope="colgroup">FLOW</th>
+                <th colspan="3" scope="colgroup">PERDAY FLOW TOTALSER</th>
+                <th colspan="3" scope="colgroup">PERDAY RUNHOURS</th>
+                <th colspan="3" scope="colgroup">PUMP STATUS</th>
+                <th colspan="2" scope="colgroup">VALVE STATUS</th>
+                <th colspan="3" scope="colgroup">FLOW TOTALISER </th>
+                <th colspan="3" scope="colgroup">ENERGY kWH</th>
+                <th colspan="3" scope="colgroup">ENERGY CONSUPTION</th>
+              </tr>
+              <tr class="tableColumn">
+                <th scope="col">UnderGround Level(ft)</th>
+                <th scope="col">ESRK3 Level(mtr)</th>
+                <th scope="col">ESRK2 Level(mtr)</th>
+
+                <th scope="col">Common Header Pressure(bar) </th>
+
+                <th scope="col">Inlet Flow(m3/hr) </th>
+                <th scope="col">ESRK3 Inlet Flow(m3/hr)</th>
+                <th scope="col">ESRK2 Inlet Flow(m3/hr) </th>
+
+                <th scope="col">Inlet Flow Perday TOTAL (MLD)</th>
+                <th scope="col">ESRK3 Flow Perday TOTAL (MLD)</th>
+                <th scope="col">ESRK2 Flow Perday TOTAL (MLD)</th>
+
+                <th scope="col">P1 RunHr Perday (hr:min) </th>
+                <th scope="col">P2 RunHr Perday (hr:min)</th>
+                <th scope="col">P3 RunHr Perday (hr:min) </th>
+
+                <th scope="col">P1 Status (Run/Stop) </th>
+                <th scope="col">P2 Status (Run/Stop) </th>
+                <th scope="col">P3 Status (Run/Stop) </th>
+
+                <th scope="col">ESRK3 Valve Open/Close  </th>
+                <th scope="col">ESRK2 Valve Open/Close  </th>
+
+                <th scope="col">Inlet Flow TOTAL (MLD) </th>
+                <th scope="col">ESRK3 Flow TOTAL (MLD) </th>
+                <th scope="col">ESRK2 Flow TOTAL (MLD)  </th>
+
+                <th scope="col">P1 Total kWh </th>
+                <th scope="col">P2 Total kWh </th>
+                <th scope="col">P3 Total kWh</th>
+
+                <th scope="col">P1 Total Perday kWh </th>
+                <th scope="col">P2 Total Perday kWh </th>
+                <th scope="col">P3 Total Perday kWh </th>
+              </tr>
             </thead>
+
             <tbody>
+              <tr *ngFor="let currentPump of pumps">
+                <ng-container *ngFor="let pump of (currentPump | keys)" >
+                  <td *ngIf="pump.key !== 'ID_NO'">
+                    <ng-container  *ngIf="pump.value || pump.value === 0; else noData">
+                      {{ getPumpValue(pump.value, pump.key)}}
+                      <span [innerHTML]="getPumpKeyUnit(pump.key)"></span>
+                    </ng-container>
+                  </td>
+                </ng-container>
+              </tr>
+              <tr *ngIf="pumps && pumps.length == 0" >
+                  <td colspan="28">No Record Found...</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-              <ng-container *ngFor="let currentPump of pumps">
-                <tr *ngFor="let pump of (currentPump | keys)">
-                  <ng-container *ngIf="pump.key !== 'ID_NO' && pump.key !== 'Dated_Time'">
-                    <!--<td>{{ currentPump.ID_NO}}</td>-->
-                    <td>{{ currentPump.Dated_Time | date:'dd.MM.yyyy'}}</td>
-                    <td>{{ currentPump.Dated_Time | date:'h:mm a'}}</td>
-                    <td>{{ getPumpKeyDescription(pump.key) }} </td>
-                    <td *ngIf="pump.value || pump.value === 0; else noData">{{ getPumpValue(pump.value, pump.key)}}
-                        <!--<span *ngIf= checkValue(pump.value)>M<sup>3</sup>/Hr</span>-->
-                       <span [innerHTML]="getPumpKeyUnit(pump.key)"></span>
-                    </td>
-                    <td><a [routerLink]="['./main',  pump.key  ]" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp; History</a></td>
-                    <ng-template #noData> <td> - </td> </ng-template>
-                  </ng-container>
-                </tr>
-              </ng-container>
+<div class="container" >
+  <div class="panel panel-primary containerPanel" >
 
+    <div class="panel-body table-responsive" >
+      <div class="row">
+        <div class="col-lg-12 table-responsive">
+          <table id="perDayTable" class="table table-hover table-bordered table-fixed">
+            <thead>
+              <tr>
+                <th colspan="3"> START DATE </th>
+                <th colspan="3">{{startDate | date:'dd-MM-yyyy'}}</th>
+                <th colspan="2"> END DATE</th>
+                <th colspan="4">{{endDate | date:'dd-MM-yyyy'}}</th>
+              </tr>
+              <tr>
+                <th colspan="2" rowspan ="2" scope="colgroup"> DATE </th>
+                <th colspan="3" scope="colgroup">PERDAY RUNHOURS</th>
+                <th colspan="3" scope="colgroup">PERDAY ENERGY CONSUPTION</th>
+                <th colspan="3" scope="colgroup">PERDAY FLOW TOTALSER</th>
+              </tr>
+              <tr>
+                <th scope="col">P1 RunHr Perday (hr:min) </th>
+                <th scope="col">P2 RunHr Perday (hr:min)</th>
+                <th scope="col">P3 RunHr Perday (hr:min) </th>
+
+                <th scope="col">Inlet Flow Perday TOTAL (MLD)</th>
+                <th scope="col">ESRK3 Flow Perday TOTAL (MLD)</th>
+                <th scope="col">ESRK2 Flow Perday TOTAL (MLD)</th>
+
+                <th scope="col">P1 Total Perday kWh </th>
+                <th scope="col">P2 Total Perday kWh </th>
+                <th scope="col">P3 Total Perday kWh </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let dayData of perDayFlow">
+                <td colspan="2">{{dayData['RH.Date_Time'] | date:'dd-MM-yyyy'}}</td>
+                <td>{{dayData['P1_RunHr']}}</td>
+                <td>{{dayData['P2_RunHr']}}</td>
+                <td>{{dayData['P3_RunHr']}}</td>
+                <td>{{dayData['P1_kWh']}}</td>
+                <td>{{dayData['P2_kWh']}}</td>
+                <td>{{dayData['P3_kWh']}}</td>
+                <td>{{dayData['Inlet_Flow_Total_in_MLD']}}</td>
+                <td>{{dayData['ESRK3_Flow_Total_in_MLD']}}</td>
+                <td>{{dayData['ESRK2_Flow_Total_in_MLD']}}</td>
+              </tr>
+              <tr *ngIf="perDayFlow && perDayFlow.length == 0" >
+                <td colspan="11">No Record Found...</td>
+              </tr>
             </tbody>
           </table>
         </div>

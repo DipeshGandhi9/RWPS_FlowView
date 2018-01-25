@@ -99,7 +99,27 @@ export class PumpService {
     ["VTC_DINDAYAL_TOTALIZER","VTC AT DINDAYAL TOTALIZER"],
     ["VTC_KABIR_ASHRAM_TOTALIZER","VTC AT KABIR ASHRAM TOTALIZER"],
     ["VTC_RWPS_TOTALIZER","VTC AT RWPS TOTALIZER"],
-    ["VTC_ZERO_POINT_TOTALIZER","VTC AT ZERO POINT TOTALIZER"]
+    ["VTC_ZERO_POINT_TOTALIZER","VTC AT ZERO POINT TOTALIZER"],
+    ["FB1_LOH_LT_MAP","FILTERBED 1 LOH"],
+    ["FB1_ROF_LT_MAP","FILTERBED 1 ROF"],
+    ["FB2_LOH_LT_MAP","FILTERBED 2 LOH"],
+    ["FB2_ROF_LT_MAP","FILTERBED 2 ROF"],
+    ["FB3_LOH_LT_MAP","FILTERBED 3 LOH"],
+    ["FB3_ROF_LT_MAP","FILTERBED 3 ROF"],
+    ["FB4_LOH_LT_MAP","FILTERBED 4 LOH"],
+    ["FB4_ROF_LT_MAP","FILTERBED 4 ROF"],
+    ["FB5_LOH_LT_MAP","FILTERBED 5 LOH"],
+    ["FB5_ROF_LT_MAP","FILTERBED 5 ROF"],
+    ["FB6_LOH_LT_MAP","FILTERBED 6 LOH"],
+    ["FB6_ROF_LT_MAP","FILTERBED 6 ROF"],
+    ["FB7_LOH_LT_MAP","FILTERBED 7 LOH"],
+    ["FB7_ROF_LT_MAP","FILTERBED 7 ROF"],
+    ["FB8_LOH_LT_MAP","FILTERBED 8 LOH"],
+    ["FB8_ROF_LT_MAP","FILTERBED 8 ROF"],
+    ["FB9_LOH_LT_MAP","FILTERBED 9 LOH"],
+    ["FB9_ROF_LT_MAP","FILTERBED 9 ROF"],
+    ["FB10_LOH_LT_MAP","FILTERBED 10 LOH"],
+    ["FB10_ROF_LT_MAP","FILTERBED 10 ROF"]
 
     ]);
 
@@ -195,7 +215,27 @@ export class PumpService {
     ["VTC_DINDAYAL_TOTALIZER","m<sup>3</sup>/hr"],
     ["VTC_KABIR_ASHRAM_TOTALIZER","m<sup>3</sup>/hr"],
     ["VTC_RWPS_TOTALIZER","m<sup>3</sup>/hr"],
-    ["VTC_ZERO_POINT_TOTALIZER","m<sup>3</sup>/hr"]
+    ["VTC_ZERO_POINT_TOTALIZER","m<sup>3</sup>/hr"],
+    ["FB1_LOH_LT_MAP","mtr"],
+    ["FB1_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB2_LOH_LT_MAP","mtr"],
+    ["FB2_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB3_LOH_LT_MAP","mtr"],
+    ["FB3_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB4_LOH_LT_MAP","mtr"],
+    ["FB4_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB5_LOH_LT_MAP","mtr"],
+    ["FB5_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB6_LOH_LT_MAP","mtr"],
+    ["FB6_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB7_LOH_LT_MAP","mtr"],
+    ["FB7_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB8_LOH_LT_MAP","mtr"],
+    ["FB8_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB9_LOH_LT_MAP","mtr"],
+    ["FB9_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB10_LOH_LT_MAP","mtr"],
+    ["FB10_ROF_LT_MAP","m<sup>3</sup>/hr"]
 
   ]);
 
