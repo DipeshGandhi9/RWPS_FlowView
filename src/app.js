@@ -12,8 +12,9 @@ var mdbFilePath = 'D:/groupnishdata/GSV/SURPURA_DATA_web.mdb';
 //mdbFilePath = 'D:/Surpura/docs/SURPURA_DATA_web.mdb';
 //mdbFilePath = 'D:/web_data/SURPURA_DATA_web.mdb';
 var zeroFlowMdbFilePath = 'D:/groupnishdata/GSV/ICGData.mdb';
-var smcFilePath = 'D:/groupnishdata/GSV/smc-data/SMC_SCADA.accdb';
 //zeroFlowMdbFilePath = 'D:/GSV/ICGData/ICGData.mdb';
+var smcFilePath = 'D:/groupnishdata/GSV/smc-data/SMC_SCADA.accdb';
+smcFilePath = 'D:/SCADA_DATABASE/SMC_SCADA_DATABASE.accdb';
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -241,6 +242,64 @@ app.get('/api/smcDataByTime', function (req, res) {
   var startDate = req.param('startDate');
   var endDate = req.param('endDate');
   var connection = ADODB.open('Provider='+ provider +';Data Source=' + smcFilePath + ';');
+
+  var successData = [];
+
+  var startDateObj = new Date(startDate);
+  var currentDate = new Date(endDate);
+  var endDateTime =  "11:59:59 PM";
+  // console.log("currentDate = " + currentDate);
+  currentTime = moment(currentDate).format("MM/DD/YYYY") + " " + endDateTime;
+  var oldTime = currentTime;
+  var newDateObj = new Date(currentTime);
+  var requests = 0;
+
+   while (startDateObj < newDateObj){
+    var query = "SELECT " + getSMCFieldList("SMC_TABLE") + " FROM SMC_TABLE WHERE " ;
+
+    for (var i = 0; i<24; i++) {
+      var newDateTime = new Date();
+      var time = moment.duration("01:00:00");
+      var date = moment(oldTime, "MM/DD/YYYY hh:mm:ss A").subtract(time);
+      newDateTime = date.format("MM/DD/YYYY hh:mm:ss A");
+      if(i != 0)
+        query = query + ' Or ';
+      query = query + ' SMC_TABLE.Date_Time in (SELECT Min(t.Date_Time) FROM SMC_TABLE t where t.Date_Time Between #'+ oldTime +'# And #'+ newDateTime +'# )';
+      oldTime = newDateTime;
+      newDateObj = new Date(date);
+    }
+
+    query = query + ' ORDER BY SMC_TABLE.Date_Time DESC';
+
+    connection
+      .query(query)
+      .on('done', function(data) {
+        // console.log(data);
+        successData = successData.concat(data);
+        requests--;
+        if(requests == 0){
+          res.send(successData);
+        }
+        //res.send(data);
+      })
+      .on('fail', function(error) {
+        requests--;
+        console.log(error);
+        console.log("Error to load data");
+        //res.send("Failed...");
+      });
+
+    requests++;
+   }
+});
+
+/*app.get('/api/smcDataByTime', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+
+  var startDate = req.param('startDate');
+  var endDate = req.param('endDate');
+  var connection = ADODB.open('Provider='+ provider +';Data Source=' + smcFilePath + ';');
   // var query = 'SELECT '+ getFieldList('J342_Surpura') +' FROM J342_Surpura WHERE J342_Surpura.Dated_Time in (SELECT Max(t.Dated_Time)FROM J342_Surpura t)';
   // var query = 'SELECT * FROM SMC_TABLE WHERE SMC_TABLE.Date_Time in (SELECT Max(t.Date_Time)FROM SMC_TABLE t)';
   var query = "SELECT " + getSMCFieldList("SMC_TABLE") + " FROM SMC_TABLE WHERE SMC_TABLE.Date_Time >= #" + startDate + "# AND SMC_TABLE.Date_Time <= #" + endDate + "# ORDER BY SMC_TABLE.Date_Time DESC";
@@ -259,7 +318,7 @@ app.get('/api/smcDataByTime', function (req, res) {
       res.send("Failed...");
     });
 
-});
+});*/
 
 app.get('/api/smcPerDayData', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");

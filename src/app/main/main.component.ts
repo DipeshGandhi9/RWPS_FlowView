@@ -11,6 +11,8 @@ import { DateFormatPipe } from './../pipes/dateFormatPipe';
 export class MainComponent implements OnInit, OnDestroy {
   title = 'Welcome !';
   errors = "";
+  smcDataStatus = "";
+  perDayDataStatus = "";
   pumps = [];
   perDayFlow = [];
   private timer;
@@ -129,7 +131,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
     // console.log("Start Date " + this.dateFormatPipe.transform(this.startDate, 'yyyy/MM/dd HH:mm:ss'));
     // console.log("End Date " + this.dateFormatPipe.transform(this.endDate, 'yyyy/MM/dd HH:mm:ss'));
-
+    this.smcDataStatus = "Loading...";
+    this.pumps = [];
     this.appService.loadSMCDataByDate(startDate, endDate)
       .subscribe(
         (data) => {
@@ -143,13 +146,20 @@ export class MainComponent implements OnInit, OnDestroy {
             this.pumps = newData;
           }
 
+          if(this.pumps.length >= 0){
+            this.smcDataStatus = "No Result Found. ";
+          }
+
           // console.log(this.pumps);
         },
         (error) => {
+          this.smcDataStatus = " Error while loading records.";
           this.errors = "Fail to load smc data.";
         }
       );
 
+    this.perDayDataStatus = "Loading...";
+    this.perDayFlow = [];
     this.appService.loadSMCPerDayDataByDate(startDate, endDate)
       .subscribe(
         (data) => {
@@ -161,12 +171,15 @@ export class MainComponent implements OnInit, OnDestroy {
             // };
             // this.pumps.splice(0,0,row);
             this.perDayFlow = newData;
+          }else {
+            this.perDayDataStatus = "No Result Found.";
           }
 
           // console.log(this.perDayFlow);
         },
         (error) => {
           this.errors = "Fail to load per day data.";
+          this.perDayDataStatus = "Error while loading records.";
         }
       );
   }

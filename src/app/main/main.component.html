@@ -72,7 +72,7 @@
             <thead>
               <tr>
                 <th colspan="3" rowspan ="2" scope="colgroup">DATE TIME</th>
-                <th colspan="3" scope="colgroup">level</th>
+                <th colspan="3" scope="colgroup">LEVEL</th>
                 <th colspan="1" scope="colgroup">PRESSURE</th>
                 <th colspan="3" scope="colgroup">FLOW</th>
                 <th colspan="3" scope="colgroup">PERDAY FLOW TOTALSER</th>
@@ -135,7 +135,7 @@
                 </ng-container>
               </tr>
               <tr *ngIf="pumps && pumps.length == 0" >
-                  <td colspan="28">No Record Found...</td>
+                  <td colspan="28"> {{ smcDataStatus }}</td>
               </tr>
             </tbody>
           </table>
@@ -195,7 +195,7 @@
                 <td>{{dayData['ESRK2_Flow_Total_in_MLD']}}</td>
               </tr>
               <tr *ngIf="perDayFlow && perDayFlow.length == 0" >
-                <td colspan="11">No Record Found...</td>
+                <td colspan="11">{{ perDayDataStatus }}</td>
               </tr>
             </tbody>
           </table>

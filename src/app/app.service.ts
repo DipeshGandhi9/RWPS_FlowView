@@ -7,44 +7,44 @@ export class AppService {
 
   // private zeroFlowHost = "http://123.63.212.28:3000";
   //private zeroFlowHost = "http://14.102.6.139:4000";
-  private localAddress = "http://localhost:3000";
+  //  private localAddress = "http://localhost:3000";
 
   constructor(public http:Http) { }
 
   loadZeroChData(){
-    return this.http.get(this.localAddress + '/api/zerochdata');
+    return this.http.get('/api/zerochdata');
   }
 
   loadZeroChDetail(UnitID:any){
     let myParams = new URLSearchParams();
     myParams.append('id', UnitID);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/zerochdetail',options);
+    return this.http.get('/api/zerochdetail',options);
   }
 
   loadZeroLatestChData(UnitID:any){
     let myParams = new URLSearchParams();
     myParams.append('id', UnitID);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/zerochdata/latest',options);
+    return this.http.get('/api/zerochdata/latest',options);
   }
 
   loadChData(){
-    return this.http.get(this.localAddress + '/api/chdata');
+    return this.http.get('/api/chdata');
   }
 
   loadChDetail(columnId:any){
     let myParams = new URLSearchParams();
     myParams.append('id', columnId);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/chdetail',options);
+    return this.http.get('/api/chdetail',options);
   }
 
   loadLatestChData(columnId:any) : Observable<any>{
     let myParams = new URLSearchParams();
     myParams.append('id', columnId);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/chdata/latest', options);
+    return this.http.get('/api/chdata/latest', options);
   }
 
   private fnExtractData(res:Response) {
@@ -65,7 +65,7 @@ export class AppService {
     myParams.append('startDate', startDate);
     myParams.append('endDate', endDate);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/smcDataByTime',options);
+    return this.http.get('/api/smcDataByTime',options);
   }
 
   loadSMCPerDayDataByDate(startDate:any, endDate:any){
@@ -73,6 +73,6 @@ export class AppService {
     myParams.append('startDate', startDate);
     myParams.append('endDate', endDate);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.localAddress + '/api/smcPerDayData',options);
+    return this.http.get('/api/smcPerDayData',options);
   }
 }
