@@ -278,6 +278,11 @@ app.get('/api/smcDataByTime', function (req, res) {
         successData = successData.concat(data);
         requests--;
         if(requests == 0){
+          if(successData.length > 2){
+            successData.sort(function(obj1, obj2) {
+              return moment.utc(obj2.Date_Time).diff(moment.utc(obj1.Date_Time));
+            });
+          }
           res.send(successData);
         }
         //res.send(data);
