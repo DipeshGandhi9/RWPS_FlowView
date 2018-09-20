@@ -5,44 +5,46 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class AppService {
 
-  private zeroFlowHost = "http://123.63.212.28:3000";
+  // private zeroFlowHost = "http://123.63.212.28:3000";
+  //private zeroFlowHost = "http://14.102.6.139:4000";
+  private zeroFlowHost = "";
 
   constructor(public http:Http) { }
 
   loadZeroChData(){
-    return this.http.get(this.zeroFlowHost + '/api/chdata');
+    return this.http.get(this.zeroFlowHost + '/api/zerochdata');
   }
 
   loadZeroChDetail(UnitID:any){
     let myParams = new URLSearchParams();
     myParams.append('id', UnitID);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.zeroFlowHost + '/api/chdetail',options);
+    return this.http.get(this.zeroFlowHost + '/api/zerochdetail',options);
   }
 
   loadZeroLatestChData(UnitID:any){
     let myParams = new URLSearchParams();
     myParams.append('id', UnitID);
     let options = new RequestOptions({params: myParams });
-    return this.http.get(this.zeroFlowHost + '/api/chdata/latest',options);
+    return this.http.get(this.zeroFlowHost + '/api/zerochdata/latest',options);
   }
 
   loadChData(){
-    return this.http.get('/api/chdata');
+    return this.http.get(this.zeroFlowHost + '/api/chdata');
   }
 
   loadChDetail(columnId:any){
     let myParams = new URLSearchParams();
     myParams.append('id', columnId);
     let options = new RequestOptions({params: myParams });
-    return this.http.get('/api/chdetail',options);
+    return this.http.get(this.zeroFlowHost + '/api/chdetail',options);
   }
 
   loadLatestChData(columnId:any) : Observable<any>{
     let myParams = new URLSearchParams();
     myParams.append('id', columnId);
     let options = new RequestOptions({params: myParams });
-    return this.http.get('/api/chdata/latest', options);
+    return this.http.get(this.zeroFlowHost + '/api/chdata/latest', options);
   }
 
   private fnExtractData(res:Response) {

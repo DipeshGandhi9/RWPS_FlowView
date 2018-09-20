@@ -22,8 +22,14 @@ export class MainDetailComponent implements OnInit, OnDestroy {
     this.columnId = route.snapshot.params['id'];
     // console.log( this.columnId );
 
-    if(this.columnId === 'ZERO_POINT'){
-      this.loadZeroChDetailData(this.zeroFlowId);
+    let column = pumpService.getZeroFlowIdFormKey(this.columnId);
+    console.log("check... " + column );
+    if(column != null){
+      this.zeroFlowId = column;
+      if(column.endsWith('-t')){
+        column = column.replace('-t', '');
+      }
+      this.loadZeroChDetailData(column);
       this.setZeroLatestDataTimer();
     }else{
       this.getHourlyFlowData();
@@ -128,10 +134,22 @@ export class MainDetailComponent implements OnInit, OnDestroy {
         var newData = JSON.parse(data["_body"]);
         if(newData.length > 0){
           for(var i=newData.length-1; i>=0; i--){
-            var row = {'Dated_Time': newData[i]['SampleTime'],
-              'ZERO_POINT': newData[i]['Analog2'],
-            };
-            this.pumps.splice(0,0,row);
+            // var row = {'Dated_Time': newData[i]['SampleTime'],
+            //   'ZERO_POINT': newData[i]['Analog2'],
+            // };
+            // this.pumps.splice(0,0,row);
+
+            var unitKey = this.pumpService.getZeroFlowKey(newData[i]['UnitID']+'-t');
+            if(this.zeroFlowId.indexOf("-t") !== -1){
+              var row = {'Dated_Time': newData[i]['SampleTime']};
+              row[unitKey] = newData[i]['TF1'];
+              this.pumps.splice(0,0,row);
+            }else{
+              unitKey = this.pumpService.getZeroFlowKey(newData[i]['UnitID']+"");
+              row = {'Dated_Time': newData[i]['SampleTime']};
+              row[unitKey] = newData[i]['Analog1'];
+              this.pumps.splice(0,0,row);
+            }
           }
         }
         //console.log(this.pumps);

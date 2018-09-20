@@ -8,8 +8,28 @@ export class PumpService {
     , 'LSG_Pump3' , 'LSG_Pump4' , 'LSG_Pump5' , 'LSG_Pump6' , 'LSG_Pump7' , 'LSG_Pump8' , 'LSG_Pump9' , 'LSG_Pump10' , 'LSG_Pump11'
     , 'LSG_Pump12' , 'LSG_Pump13' , 'LSG_Pump14' , 'LSG_DW_Pump1' , 'LSG_DW_Pump2'];
 
+  public zeropoint_map = new Map([
+    ["342","ZERO_POINT"],
+    ["344","VTC_KABIR_ASHRAM"],
+    ["345","LSG_INLET"],
+    ["346","VTC_Gandhinagar"],
+    ["347","VTC_DGR_1"],
+    ["348","VTC_DGR_2"],
+    ["349","VTC_DINDAYAL"],
+    ["342-t","ZERO_POINT_TOTALIZER"],
+    ["344-t","VTC_KABIR_ASHRAM_TOTALIZER"],
+    ["345-t","LSG_INLET_TOTALIZER"],
+    ["346-t","VTC_Gandhinagar_TOTALIZER"],
+    ["347-t","VTC_DGR_1_TOTALIZER"],
+    ["348-t","VTC_DGR_2_TOTALIZER"],
+    ["349-t","VTC_DINDAYAL_TOTALIZER"]
+  ]);
+
   public _map = new Map([
     ["ZERO_POINT","ZERO POINT"],
+    ["ZERO_POINT_TOTALIZER","ZERO POINT TOTALIZER"],
+    ["LSG_INLET","LALSAGAR INLET"],
+    ["LSG_INLET_TOTALIZER","LALSAGAR INLET TOTALIZER"],
     ["RWPS_LVL1","RWPS -  SUMP LEVEL-1"],
     ["RWPS_LVL2","RWPS -  SUMP LEVEL-2"],
     ["RWPS_FLW_1_CMN_DIS","RWPS -  COMMON INLET FLOW FROM ZERO POINT"],
@@ -88,24 +108,61 @@ export class PumpService {
     ["WTP_PH_INLET_CHAMBER","WTP - PH AT INLET CHAMBER"],
     ["WTP_TA_INLET_CHAMBER","WTP - TURBIDITY AT INLET CHAMBER"],
     ["WTP_TA_FILTERBED_INLET","WTP - TURBIDITY AT FILTERBED INLET"],
-    ["WTP_PH_FILTERBED_INLET","WTP - PH AT FILTERBED INLET"],
+    ["R3_CLD_2_MAP","RECYCLE TANK TURBIDITY"],
     ["WTP_CHLORINE_FILTERBED_INLET","WTP - CHLORINE AT FILTERBED INLET"],
     ["WTP_CHLORINE_FILTERBED_OUTLET","WTP - CHLORINE AT FILTERBED OUTLET"],
     ["WTP_PH_FILTERBED_OUTLET","WTP - PH AT FILTERBED OUTLET"],
     ["WTP_TA_FILTERBED_OUTLET","WTP - TURBIDITY AT FILTERBED OUTLET"],
     ["VTC_Gandhinagar_TOTALIZER","VTC AT GANDHINAGAR TOTALIZER"],
-    ["VTC_DGR_1_TOTSLIZER","VTC AT DIGARI-1 TOTALIZER"],
+    ["VTC_DGR_1_TOTALIZER","VTC AT DIGARI-1 TOTALIZER"],
     ["VTC_DGR_2_TOTALIZER","VTC AT DIGARI-2 TOTALIZER"],
     ["VTC_DINDAYAL_TOTALIZER","VTC AT DINDAYAL TOTALIZER"],
     ["VTC_KABIR_ASHRAM_TOTALIZER","VTC AT KABIR ASHRAM TOTALIZER"],
     ["VTC_RWPS_TOTALIZER","VTC AT RWPS TOTALIZER"],
-    ["VTC_ZERO_POINT_TOTALIZER","VTC AT ZERO POINT TOTALIZER"]
+    ["VTC_ZERO_POINT_TOTALIZER","VTC AT ZERO POINT TOTALIZER"],
+    ["FB1_LOH_LT_MAP","FILTERBED 1 LOH"],
+    ["FB1_ROF_LT_MAP","FILTERBED 1 ROF"],
+    ["FB2_LOH_LT_MAP","FILTERBED 2 LOH"],
+    ["FB2_ROF_LT_MAP","FILTERBED 2 ROF"],
+    ["FB3_LOH_LT_MAP","FILTERBED 3 LOH"],
+    ["FB3_ROF_LT_MAP","FILTERBED 3 ROF"],
+    ["FB4_LOH_LT_MAP","FILTERBED 4 LOH"],
+    ["FB4_ROF_LT_MAP","FILTERBED 4 ROF"],
+    ["FB5_LOH_LT_MAP","FILTERBED 5 LOH"],
+    ["FB5_ROF_LT_MAP","FILTERBED 5 ROF"],
+    ["FB6_LOH_LT_MAP","FILTERBED 6 LOH"],
+    ["FB6_ROF_LT_MAP","FILTERBED 6 ROF"],
+    ["FB7_LOH_LT_MAP","FILTERBED 7 LOH"],
+    ["FB7_ROF_LT_MAP","FILTERBED 7 ROF"],
+    ["FB8_LOH_LT_MAP","FILTERBED 8 LOH"],
+    ["FB8_ROF_LT_MAP","FILTERBED 8 ROF"],
+    ["FB9_LOH_LT_MAP","FILTERBED 9 LOH"],
+    ["FB9_ROF_LT_MAP","FILTERBED 9 ROF"],
+    ["FB10_LOH_LT_MAP","FILTERBED 10 LOH"],
+    ["FB10_ROF_LT_MAP","FILTERBED 10 ROF"]
 
     ]);
 
+  // ["342","ZERO_POINT"],
+  // ["344","VTC_KABIR_ASHRAM"],
+  // ["345","LSG"],
+  // ["346","VTC_Gandhinagar"],
+  // ["347","VTC_DGR_1"],
+  // ["348","VTC_DGR_2"],
+  // ["349","VTC_DINDAYAL"],
+  // ["342-t","ZERO_POINT_TOTSLIZER"],
+  // ["344-t","VTC_KABIR_ASHRAM_TOTSLIZER"],
+  // ["345-t","LSG_TOTSLIZER"],
+  // ["346-t","VTC_Gandhinagar_TOTSLIZER"],
+  // ["347-t","VTC_DGR_1_TOTSLIZER"],
+  // ["348-t","VTC_DGR_2_TOTSLIZER"],
+  // ["349-t","VTC_DINDAYAL_TOTSLIZER"]
 
 	public mapUnit = new Map([
     ["ZERO_POINT","m<sup>3</sup>/hr"],
+    ["ZERO_POINT_TOTALIZER","m<sup>3</sup>"],
+    ["LSG_INLET","m<sup>3</sup>/hr"],
+    ["LSG_INLET_TOTALIZER","m<sup>3</sup>"],
     ["RWPS_LVL1","mtr"],
     ["RWPS_LVL2","mtr"],
     ["RWPS_FLW_1_CMN_DIS","m<sup>3</sup>/hr"],
@@ -184,18 +241,38 @@ export class PumpService {
     ["WTP_PH_INLET_CHAMBER","ph"],
     ["WTP_TA_INLET_CHAMBER","ntu"],
     ["WTP_TA_FILTERBED_INLET","ntu"],
-    ["WTP_PH_FILTERBED_INLET","ph"],
+    ["R3_CLD_2_MAP","ntu"],
     ["WTP_CHLORINE_FILTERBED_INLET","ppm"],
     ["WTP_CHLORINE_FILTERBED_OUTLET","ppm"],
     ["WTP_PH_FILTERBED_OUTLET","ph"],
     ["WTP_TA_FILTERBED_OUTLET","ntu"],
-    ["VTC_Gandhinagar_TOTALIZER","m<sup>3</sup>/hr"],
-    ["VTC_DGR_1_TOTSLIZER","m<sup>3</sup>/hr"],
-    ["VTC_DGR_2_TOTALIZER","m<sup>3</sup>/hr"],
-    ["VTC_DINDAYAL_TOTALIZER","m<sup>3</sup>/hr"],
-    ["VTC_KABIR_ASHRAM_TOTALIZER","m<sup>3</sup>/hr"],
+    ["VTC_Gandhinagar_TOTALIZER","m<sup>3</sup>"],
+    ["VTC_DGR_1_TOTALIZER","m<sup>3</sup>"],
+    ["VTC_DGR_2_TOTALIZER","m<sup>3</sup>"],
+    ["VTC_DINDAYAL_TOTALIZER","m<sup>3</sup>"],
+    ["VTC_KABIR_ASHRAM_TOTALIZER","m<sup>3</sup>"],
     ["VTC_RWPS_TOTALIZER","m<sup>3</sup>/hr"],
-    ["VTC_ZERO_POINT_TOTALIZER","m<sup>3</sup>/hr"]
+    ["VTC_ZERO_POINT_TOTALIZER","m<sup>3</sup>/hr"],
+    ["FB1_LOH_LT_MAP","mtr"],
+    ["FB1_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB2_LOH_LT_MAP","mtr"],
+    ["FB2_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB3_LOH_LT_MAP","mtr"],
+    ["FB3_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB4_LOH_LT_MAP","mtr"],
+    ["FB4_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB5_LOH_LT_MAP","mtr"],
+    ["FB5_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB6_LOH_LT_MAP","mtr"],
+    ["FB6_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB7_LOH_LT_MAP","mtr"],
+    ["FB7_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB8_LOH_LT_MAP","mtr"],
+    ["FB8_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB9_LOH_LT_MAP","mtr"],
+    ["FB9_ROF_LT_MAP","m<sup>3</sup>/hr"],
+    ["FB10_LOH_LT_MAP","mtr"],
+    ["FB10_ROF_LT_MAP","m<sup>3</sup>/hr"]
 
   ]);
 
@@ -210,6 +287,25 @@ export class PumpService {
 
   public set map(value:Map<string, string>) {
     this._map = value;
+  }
+
+  getZeroFlowKey(key:string):any {
+    var description = this.zeropoint_map.get(key);
+    if(description){
+      return description;
+    }else{
+      return key;
+    }
+  }
+
+  getZeroFlowIdFormKey(val:string):string{
+    for( let entry of Array.from(this.zeropoint_map)){
+      if(val == entry[1]){
+        console.log("value matched..");
+        return entry[0];
+      }
+    }
+    return null;
   }
 
   getPumpKeyDescription(key:string):any {

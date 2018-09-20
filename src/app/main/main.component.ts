@@ -74,10 +74,18 @@ export class MainComponent implements OnInit, OnDestroy {
           console.log(data);
           var newData = JSON.parse(data["_body"]);
           if(newData.length > 0){
-            var row = {'Dated_Time': newData[0]['SampleTime'],
-                        'ZERO_POINT': newData[0]['Analog2'],
-                      };
-            this.pumps.splice(0,0,row);
+
+            for(var i = newData.length-1; i >= 0; i--) {
+              var unitKey = this.pumpService.getZeroFlowKey(newData[i]['UnitID']+'-t');
+              var row = {'Dated_Time': newData[i]['SampleTime']};
+              row[unitKey] = newData[i]['TF1'];
+              this.pumps.splice(0,0,row);
+
+              unitKey = this.pumpService.getZeroFlowKey(newData[i]['UnitID']+"");
+              row = {'Dated_Time': newData[i]['SampleTime']};
+                row[unitKey] = newData[i]['Analog1'];
+              this.pumps.splice(0,0,row);
+            }
           }
 
           console.log(this.pumps);
